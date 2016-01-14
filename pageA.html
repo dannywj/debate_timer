@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>倒计时</title>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+#timer{
+    font-size: 150px;
+    text-align: center;
+}
+#btn{
+     text-align: center;
+     margin-top: 100px;
+}
+    </style>
+  </head>
+
+  <body>
+
+    <div class="container" style="width:90%; height:90%">
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">正方辩论倒计时</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="pageA.html">正方</a></li>
+                    <li class="active"><a href="pageB.html">反方</a></li>
+                    <li><a href="pageAll.html">集体</a></li>
+            </ul>
+         
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        
+            <h1>剩余时间：</h1>  
+            <div id = "timer">  
+                <span id="min">00</span>:
+                <span id="sec">00</span>
+            </div>  
+      
+       
+        <p id="btn">
+          <a class="btn btn-lg btn-success" href="#" role="button" onclick="start();">开始 &raquo;</a>&nbsp;&nbsp;&nbsp;&nbsp;
+           <a class="btn btn-lg btn-danger" href="#" role="button" onclick="stop();">停止 &raquo;</a>
+        </p>
+      </div>
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+<script src="js/jq.snow.js"></script>
+     <script type="text/javascript">
+
+ String.prototype.Trim = function () {
+    return this.replace(/(^\s*)|(\s*$)/g, "");
+};
+
+Date.prototype.addSeconds = function (seconds) {
+    this.setSeconds(this.getSeconds() + seconds);
+    return this;
+};
+
+Date.prototype.addMinutes = function (minutes) {
+    this.setMinutes(this.getMinutes() + minutes);
+    return this;
+};
+
+            var totalTimeSecond=3;
+
+            var sMin=parseInt(totalTimeSecond/60);
+            var sSec=totalTimeSecond-60*sMin;
+            //alert("sMin:"+(sMin)+" sSec:"+sSec);
+
+            document.getElementById("min").innerHTML =checkTime(sMin);
+            document.getElementById("sec").innerHTML =checkTime(sSec);
+
+
+            var lastTime=totalTimeSecond;
+            var addTime= new Date().addSeconds(totalTimeSecond);
+
+            function timer()
+            {  
+                var ts = (addTime) - (new Date());//计算剩余的毫秒数  
+                var mm = parseInt(ts / 1000 / 60 % 60, 10);//计算剩余的分钟数  
+                var ss = parseInt(ts / 1000 % 60, 10);//计算剩余的秒数  
+            
+                if(mm==0&&ss==0){
+                    document.getElementById("min").innerHTML ='00';
+                    document.getElementById("sec").innerHTML ='00';
+                    clearInterval(begin);
+                    document.getElementById("timer").innerHTML='<span style="color:red">时间到！</span>';
+                    return false;
+                }
+
+                mm = checkTime(mm);
+                ss = checkTime(ss);
+
+                document.getElementById("min").innerHTML =mm;
+                document.getElementById("sec").innerHTML =ss;
+
+            }  
+
+            function checkTime(i)    
+            {    
+               if (i < 10) {    
+                   i = "0" + i;    
+                }    
+               return i;    
+            }    
+
+
+            function stop() {
+                clearInterval(begin);
+                lastTime=parseInt(document.getElementById("sec").innerHTML.toString())+parseInt(document.getElementById("min").innerHTML.toString())*60;
+                lastTime=lastTime+1;
+            }
+
+             function start() {
+                document.getElementById("timer").style.display="block";
+                addTime= new Date().addSeconds(lastTime);
+                begin= setInterval("timer()",500);  
+
+            }
+
+
+
+  $(function(){
+   $.fn.snow({ 
+     minSize: 5,   //雪花的最小尺寸
+     maxSize: 50,  //雪花的最大尺寸
+     newOn: 300    //雪花出现的频率 这个数值越小雪花越多
+   });
+  });
+
+
+ </script>
+  </body>
+</html>
